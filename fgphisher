@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+ ORANGE="$(printf '\033[33m')" 
+WHITE="$(printf '\033[37m')" 
+
+printf " \e[1;37m\n"
+
 
 cd /root/fgphisher-tool || { echo "Failed to enter the directory => /root/fgphisher-tool"; exit 1; }
 
@@ -21,7 +26,7 @@ fgphisher(){
 }
 
 server(){
-  echo "[::] Starting Fgphisher..."
+  echo "${WHITE}[${ORANGE}INFO${WHITE}] Starting Fgphisher..."
 bash cloud.sh
 }
 
