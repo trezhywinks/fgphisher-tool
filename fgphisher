@@ -22,7 +22,7 @@ fgphisher(){
 
 server(){
   echo "[::] Starting Fgphisher..."
-  npm run telegram 
+bash cloud.sh
 }
 
 
