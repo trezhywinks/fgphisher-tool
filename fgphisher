@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd /root/camphisher-tool || { echo "Failed to enter the directory => /root/camphisher-tool"; exit 1; }
+cd /root/fgphisher-tool || { echo "Failed to enter the directory => /root/fgphisher-tool"; exit 1; }
 
 fgphisher(){
   case "$1 $2" in
@@ -11,7 +11,7 @@ fgphisher(){
       server 
       ;;
     "-d files.png")
-    rm -rf /root/fgphisher/server.phisher/files
+    rm -rf /root/fgphisher-tool/server.phisher/files
       ;;
     *)
       echo "Erro! Unknown command: $1"
